@@ -1,0 +1,3 @@
+allowBuilds:
+  sharp: false
+storeDir: /home/acer/.local/share/pnpm/store/v10

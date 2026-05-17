@@ -1,0 +1,140 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Source+Serif+4:wght@400;600&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg: #faf8f4;
+    --bg-card: #f2efe8;
+    --text: #3b2f20;
+    --text-muted: #7a6b58;
+    --green: #4a7c59;
+    --green-light: #e8f0e6;
+    --brown: #8b6f47;
+    --brown-light: #c9b89a;
+    --border: #e2dbd0;
+    --bg-rgb: 250 248 244;
+    --bg-card-rgb: 242 239 232;
+    --text-rgb: 59 47 32;
+    --text-muted-rgb: 122 107 88;
+    --green-rgb: 74 124 89;
+    --green-light-rgb: 232 240 230;
+    --brown-rgb: 139 111 71;
+    --brown-light-rgb: 201 184 154;
+    --border-rgb: 226 219 208;
+
+    --background: var(--bg);
+    --foreground: var(--text);
+    --card: var(--bg-card);
+    --card-foreground: var(--text);
+    --popover: var(--bg-card);
+    --popover-foreground: var(--text);
+    --primary: var(--green);
+    --primary-foreground: 210 20% 98%;
+    --secondary: var(--green-light);
+    --secondary-foreground: var(--green);
+    --muted: var(--bg-card);
+    --muted-foreground: var(--text-muted);
+    --accent: var(--green-light);
+    --accent-foreground: var(--green);
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --input: var(--border);
+    --ring: var(--green);
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --bg: #faf8f4;
+    --bg-card: #f2efe8;
+    --text: #3b2f20;
+    --text-muted: #7a6b58;
+    --green: #4a7c59;
+    --green-light: #e8f0e6;
+    --brown: #8b6f47;
+    --brown-light: #c9b89a;
+    --border: #e2dbd0;
+    --bg-rgb: 250 248 244;
+    --bg-card-rgb: 242 239 232;
+    --text-rgb: 59 47 32;
+    --text-muted-rgb: 122 107 88;
+    --green-rgb: 74 124 89;
+    --green-light-rgb: 232 240 230;
+    --brown-rgb: 139 111 71;
+    --brown-light-rgb: 201 184 154;
+    --border-rgb: 226 219 208;
+
+    --background: var(--bg);
+    --foreground: var(--text);
+    --card: var(--bg-card);
+    --card-foreground: var(--text);
+    --popover: var(--bg-card);
+    --popover-foreground: var(--text);
+    --primary: var(--green);
+    --primary-foreground: 210 20% 98%;
+    --secondary: var(--green-light);
+    --secondary-foreground: var(--green);
+    --muted: var(--bg-card);
+    --muted-foreground: var(--text-muted);
+    --accent: var(--green-light);
+    --accent-foreground: var(--green);
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --input: var(--border);
+    --ring: var(--green);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Inter", sans-serif;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  h1,
+  h2,
+  h3,
+  .font-serif {
+    font-family: "Source Serif 4", serif;
+  }
+}
+
+@layer components {
+  .section-label {
+    @apply mb-4 inline-flex rounded-full border border-border bg-transparent px-3 py-1 text-[0.8rem] font-medium uppercase tracking-[0.1em] text-green;
+  }
+
+  .section-title {
+    @apply mb-4 font-serif text-[1.8rem] font-semibold leading-tight text-foreground md:text-[2.2rem];
+  }
+
+  .earth-card {
+    @apply rounded-[10px] border border-border bg-card shadow-none transition-all duration-300;
+  }
+
+  .earth-card-hover {
+    @apply hover:-translate-y-[3px] hover:border-brown-light hover:shadow-[0_18px_38px_rgba(59,47,32,0.08)];
+  }
+}
+
+.animate-blink {
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  from,
+  to {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
