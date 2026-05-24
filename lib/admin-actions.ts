@@ -39,12 +39,20 @@ export async function saveProject(formData: FormData) {
   try {
     const supabase = await createClient()
     const id = String(formData.get("project_id") ?? "").trim() || undefined
-    const payload = {
+
+    const payload: Record<string, unknown> = {
       title: String(formData.get("title") ?? ""),
       description: String(formData.get("description") ?? "") || null,
       tags: parseTags(String(formData.get("tags") ?? "")),
       github_url: String(formData.get("github_url") ?? "") || null,
       live_url: String(formData.get("live_url") ?? "") || null,
+    }
+
+    const thumbnailUrl = formData.get("thumbnail_url")
+    if (thumbnailUrl) {
+      payload.thumbnail_url = String(thumbnailUrl)
+    } else if (!id) {
+      payload.thumbnail_url = null
     }
 
     if (id) {
