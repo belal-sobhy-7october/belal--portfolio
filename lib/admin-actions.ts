@@ -81,6 +81,7 @@ export async function deleteProject(id: string) {
     const { error } = await supabase.from("projects").delete().eq("id", id)
     if (error) throw error
     revalidatePath("/manage-portal/projects")
+    revalidatePath("/")
     return { success: true as const }
   } catch {
     return { success: false as const, error: ADMIN_ERRORS.delete }
@@ -116,6 +117,7 @@ export async function saveProject(formData: FormData) {
     }
 
     revalidatePath("/manage-portal/projects")
+    revalidatePath("/")
     redirect("/manage-portal/projects")
   } catch (err) {
     if (err && typeof err === "object" && "digest" in err) throw err
@@ -132,6 +134,7 @@ export async function addSkill(formData: FormData) {
     })
     if (error) throw error
     revalidatePath("/manage-portal/skills")
+    revalidatePath("/")
     return { success: true as const }
   } catch {
     return { success: false as const, error: ADMIN_ERRORS.save }
@@ -144,6 +147,7 @@ export async function deleteSkill(id: string) {
     const { error } = await supabase.from("skills").delete().eq("id", id)
     if (error) throw error
     revalidatePath("/manage-portal/skills")
+    revalidatePath("/")
     return { success: true as const }
   } catch {
     return { success: false as const, error: ADMIN_ERRORS.delete }
@@ -158,6 +162,7 @@ export async function addCategory(formData: FormData) {
     })
     if (error) throw error
     revalidatePath("/manage-portal/skills")
+    revalidatePath("/")
     return { success: true as const }
   } catch {
     return { success: false as const, error: ADMIN_ERRORS.save }
@@ -180,6 +185,7 @@ export async function deleteCategory(id: string) {
     const { error } = await supabase.from("categories").delete().eq("id", id)
     if (error) throw error
     revalidatePath("/manage-portal/skills")
+    revalidatePath("/")
     return { success: true as const }
   } catch {
     return { success: false as const, error: ADMIN_ERRORS.delete }
@@ -192,6 +198,7 @@ export async function deleteExperience(id: string) {
     const { error } = await supabase.from("experiences").delete().eq("id", id)
     if (error) throw error
     revalidatePath("/manage-portal/experiences")
+    revalidatePath("/")
     return { success: true as const }
   } catch {
     return { success: false as const, error: ADMIN_ERRORS.delete }
@@ -224,6 +231,7 @@ export async function saveExperience(formData: FormData) {
     }
 
     revalidatePath("/manage-portal/experiences")
+    revalidatePath("/")
     redirect("/manage-portal/experiences")
   } catch (err) {
     if (err && typeof err === "object" && "digest" in err) throw err
@@ -250,6 +258,7 @@ export async function saveProfile(formData: FormData) {
     }
 
     revalidatePath("/manage-portal/profile")
+    revalidatePath("/")
     return { success: true as const }
   } catch {
     return { success: false as const, error: ADMIN_ERRORS.save }
@@ -267,6 +276,7 @@ export async function addContact(formData: FormData) {
     })
     if (error) throw error
     revalidatePath("/manage-portal/contact")
+    revalidatePath("/")
     return { success: true as const }
   } catch {
     return { success: false as const, error: ADMIN_ERRORS.save }
@@ -279,6 +289,7 @@ export async function deleteContact(id: string) {
     const { error } = await supabase.from("contact_info").delete().eq("id", id)
     if (error) throw error
     revalidatePath("/manage-portal/contact")
+    revalidatePath("/")
     return { success: true as const }
   } catch {
     return { success: false as const, error: ADMIN_ERRORS.delete }
