@@ -3,6 +3,7 @@ import { Code2, Layout, Server, Wrench, Binary } from "lucide-react"
 import { supabase } from "@/lib/supabase"
 import type {
   ContactInfoRow,
+  CvFile,
   ExperienceRow,
   ProfileSettings,
   ProjectRow,
@@ -162,6 +163,16 @@ export async function fetchContacts(): Promise<ContactInfoRow[]> {
     return (data ?? []) as ContactInfoRow[]
   } catch {
     return []
+  }
+}
+
+export async function fetchCvUrl(): Promise<string | null> {
+  try {
+    const { data, error } = await supabase.from("cv_files").select("file_url").limit(1).single()
+    if (error) throw error
+    return data?.file_url ?? null
+  } catch {
+    return null
   }
 }
 

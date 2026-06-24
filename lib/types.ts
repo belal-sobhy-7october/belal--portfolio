@@ -48,6 +48,13 @@ export interface ContactInfoRow {
   created_at?: string
 }
 
+export interface CvFile {
+  id: string
+  file_url: string
+  file_name: string | null
+  uploaded_at: string
+}
+
 export interface GroupedTechCategory {
   name: string
   skills: { name: string; level: number }[]

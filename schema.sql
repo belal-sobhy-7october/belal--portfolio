@@ -1,4 +1,5 @@
 -- 1. حذف الجداول القديمة لو موجودة تماماً للبدء على نظافة
+DROP TABLE IF EXISTS cv_files CASCADE;
 DROP TABLE IF EXISTS contact_info CASCADE;
 DROP TABLE IF EXISTS experiences CASCADE;
 DROP TABLE IF EXISTS projects CASCADE;
@@ -51,6 +52,22 @@ CREATE TABLE experiences (
   description TEXT,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
+
+CREATE TABLE cv_files (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  file_url TEXT NOT NULL,
+  file_name TEXT,
+  uploaded_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+ALTER TABLE cv_files ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Allow all for authenticated users on cv_files"
+  ON cv_files
+  FOR ALL
+  TO authenticated
+  USING (true)
+  WITH CHECK (true);
 
 CREATE TABLE contact_info (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),

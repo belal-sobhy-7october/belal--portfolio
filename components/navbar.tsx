@@ -1,13 +1,15 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Menu, X } from "lucide-react"
+import { Download, Menu, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import { supabase } from "@/lib/supabase"
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const [cvUrl, setCvUrl] = useState<string | null>(null)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -16,6 +18,18 @@ export default function Navbar() {
 
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
+
+  useEffect(() => {
+    supabase
+      .from("cv_files")
+      .select("file_url")
+      .limit(1)
+      .single()
+      .then(({ data }) => {
+        if (data) setCvUrl(data.file_url)
+      })
+      .catch(() => {})
   }, [])
 
   const scrollToSection = (sectionId: string) => {
@@ -62,6 +76,14 @@ export default function Navbar() {
                 {link.name}
               </button>
             ))}
+            {cvUrl && (
+              <Button variant="outline" size="sm" asChild>
+                <a href={cvUrl} target="_blank" rel="noopener noreferrer">
+                  <Download className="h-4 w-4" />
+                  Download CV
+                </a>
+              </Button>
+            )}
           </nav>
 
           {/* Mobile Navigation Toggle */}
@@ -85,6 +107,14 @@ export default function Navbar() {
                   {link.name}
                 </button>
               ))}
+              {cvUrl && (
+                <Button variant="outline" size="sm" asChild className="w-full">
+                  <a href={cvUrl} target="_blank" rel="noopener noreferrer">
+                    <Download className="h-4 w-4" />
+                    Download CV
+                  </a>
+                </Button>
+              )}
             </nav>
           </div>
         </div>

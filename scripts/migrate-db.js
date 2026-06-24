@@ -138,6 +138,41 @@ async function createTables() {
       console.log("✓ experiences table created");
     }
 
+    // Create cv_files table
+    const { error: cvError } = await supabase.rpc("exec_sql", {
+      sql: `
+        CREATE TABLE IF NOT EXISTS cv_files (
+          id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+          file_url TEXT NOT NULL,
+          file_name TEXT,
+          uploaded_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+        );
+
+        ALTER TABLE cv_files ENABLE ROW LEVEL SECURITY;
+
+        DO $$
+        BEGIN
+          IF NOT EXISTS (
+            SELECT 1 FROM pg_policies WHERE tablename = 'cv_files' AND policyname = 'Allow all for authenticated users on cv_files'
+          ) THEN
+            CREATE POLICY "Allow all for authenticated users on cv_files"
+              ON cv_files
+              FOR ALL
+              TO authenticated
+              USING (true)
+              WITH CHECK (true);
+          END IF;
+        END
+        $$;
+      `,
+    });
+
+    if (cvError && !cvError.message.includes("already exists")) {
+      console.error("Error creating cv_files table:", cvError);
+    } else {
+      console.log("✓ cv_files table created");
+    }
+
     // Create contact_info table
     const { error: contactError } = await supabase.rpc("exec_sql", {
       sql: `

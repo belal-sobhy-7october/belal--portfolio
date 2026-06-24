@@ -5,6 +5,8 @@ import { redirect } from "next/navigation"
 import { ADMIN_ERRORS } from "@/lib/admin-messages"
 import { createClient } from "@/lib/supabase-server"
 
+const CV_BUCKET = "cv-storage"
+
 function formatDuration(startDate: string, endDate: string | null): string {
   const start = new Date(startDate).toLocaleDateString("en-US", {
     month: "short",
@@ -21,6 +23,56 @@ function parseTags(raw: string): string[] {
     .split(",")
     .map((t) => t.trim())
     .filter(Boolean)
+}
+
+export async function uploadCv(formData: FormData) {
+  try {
+    const supabase = await createClient()
+    const file = formData.get("file") as File | null
+
+    if (!file || file.size === 0) {
+      return { success: false as const, error: "Please select a file." }
+    }
+
+    if (file.type !== "application/pdf") {
+      return { success: false as const, error: "Only PDF files are allowed." }
+    }
+
+    const fileName = `Belal-Sobhy-CV.pdf`
+    const filePath = `${Date.now()}-${fileName}`
+
+    const { error: bucketError } = await supabase.storage.createBucket(CV_BUCKET, {
+      public: true,
+    })
+    if (bucketError && !bucketError.message.includes("already exists")) {
+      return { success: false as const, error: "Failed to create storage bucket." }
+    }
+
+    const { error: uploadError } = await supabase.storage.from(CV_BUCKET).upload(filePath, file, {
+      upsert: true,
+    })
+    if (uploadError) {
+      return { success: false as const, error: "Failed to upload file." }
+    }
+
+    const { data: publicUrlData } = supabase.storage.from(CV_BUCKET).getPublicUrl(filePath)
+    const fileUrl = publicUrlData.publicUrl
+
+    await supabase.from("cv_files").delete().neq("id", "00000000-0000-0000-0000-000000000000")
+
+    const { error: insertError } = await supabase.from("cv_files").insert({
+      file_url: fileUrl,
+      file_name: fileName,
+    })
+    if (insertError) {
+      return { success: false as const, error: "Failed to save CV record." }
+    }
+
+    revalidatePath("/manage-portal/cv")
+    return { success: true as const }
+  } catch {
+    return { success: false as const, error: ADMIN_ERRORS.save }
+  }
 }
 
 export async function deleteProject(id: string) {

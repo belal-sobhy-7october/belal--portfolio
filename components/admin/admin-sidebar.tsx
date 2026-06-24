@@ -12,6 +12,7 @@ const navItems = [
   { href: "/manage-portal/skills", label: "Skills", icon: "🛠" },
   { href: "/manage-portal/experiences", label: "Experiences", icon: "💼" },
   { href: "/manage-portal/profile", label: "Profile", icon: "👤" },
+  { href: "/manage-portal/cv", label: "CV / Resume", icon: "📄" },
   { href: "/manage-portal/contact", label: "Contact Info", icon: "📞" },
 ]
 

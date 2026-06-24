@@ -70,6 +70,30 @@ CREATE TABLE IF NOT EXISTS experiences (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
+CREATE TABLE IF NOT EXISTS cv_files (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  file_url TEXT NOT NULL,
+  file_name TEXT,
+  uploaded_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+ALTER TABLE cv_files ENABLE ROW LEVEL SECURITY;
+
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_policies WHERE tablename = 'cv_files' AND policyname = 'Allow all for authenticated users on cv_files'
+  ) THEN
+    CREATE POLICY "Allow all for authenticated users on cv_files"
+      ON cv_files
+      FOR ALL
+      TO authenticated
+      USING (true)
+      WITH CHECK (true);
+  END IF;
+END
+$$;
+
 CREATE TABLE IF NOT EXISTS contact_info (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   platform_name TEXT NOT NULL,
