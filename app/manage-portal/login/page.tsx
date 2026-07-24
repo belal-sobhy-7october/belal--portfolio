@@ -28,14 +28,16 @@ export default function LoginPage() {
       })
 
       if (signInError) {
-        setError("Invalid email or password")
+        console.error("SUPABASE AUTH ERROR:", signInError.message, signInError.status)
+        setError(signInError.message) // TEMP: surface real error for diagnosis
         return
       }
 
       router.push("/manage-portal")
       router.refresh()
-    } catch {
-      setError("Invalid email or password")
+    } catch (err) {
+      console.error("UNEXPECTED LOGIN ERROR:", err)
+      setError(String(err)) // TEMP: surface real error for diagnosis
     } finally {
       setLoading(false)
     }
