@@ -77,16 +77,25 @@ export default function ProjectsClient({ projects }: ProjectsClientProps) {
                   onClick={() => setExpandedProject(expandedProject === project.id ? null : project.id)}
                 >
                   <CardContent className="p-0">
-                    <div className="relative overflow-hidden">
+                    <div className="relative bg-muted">
                       <img
                         src={project.image}
                         alt={project.title}
-                        className="w-full aspect-video object-cover transition-transform duration-300 group-hover:scale-105"
+                        className="w-full h-64 object-contain transition-transform duration-300 group-hover:scale-105"
                       />
-                      <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-background/95 to-background/20 p-6">
-                        <h3 className="mb-2 font-serif text-xl font-semibold text-foreground">{project.title}</h3>
-                        <p className="line-clamp-2 text-sm text-muted-foreground">{project.description}</p>
-                      </div>
+                      {project.tags.length > 0 && (
+                        <Badge
+                          variant="secondary"
+                          className="absolute top-3 left-3 border border-border/60 bg-background/80 text-xs backdrop-blur-sm"
+                        >
+                          {project.tags[0]}
+                        </Badge>
+                      )}
+                    </div>
+
+                    <div className="p-5">
+                      <h3 className="mb-2 font-serif text-lg font-semibold text-foreground">{project.title}</h3>
+                      <p className="line-clamp-2 text-sm text-muted-foreground">{project.description}</p>
                     </div>
 
                     <AnimatePresence>
@@ -176,6 +185,13 @@ export default function ProjectsClient({ projects }: ProjectsClientProps) {
       {selectedProject && (
         <Dialog open={!!selectedProject} onOpenChange={() => setSelectedProject(null)}>
           <DialogContent className="max-w-3xl border-border bg-card text-foreground">
+            <div className="rounded-lg overflow-hidden bg-muted -mx-6 -mt-6 mb-6">
+              <img
+                src={selectedProject.image}
+                alt={selectedProject.title}
+                className="w-full max-h-96 object-contain"
+              />
+            </div>
             <DialogHeader>
               <DialogTitle>{selectedProject.title}</DialogTitle>
               <DialogDescription asChild>
@@ -193,11 +209,6 @@ export default function ProjectsClient({ projects }: ProjectsClientProps) {
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-4">
-              <img
-                src={selectedProject.image}
-                alt={selectedProject.title}
-                className="w-full rounded-md object-cover aspect-video"
-              />
               <p className="text-muted-foreground">{selectedProject.description}</p>
               <div className="flex justify-end gap-4 mt-4">
                 {selectedProject.githubLink && (
