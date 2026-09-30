@@ -3,6 +3,8 @@ import { ADMIN_ERRORS } from "@/lib/admin-messages"
 import { createClient } from "@/lib/supabase-server"
 import type { ContactInfoRow } from "@/lib/types"
 
+export const dynamic = "force-dynamic"
+
 export default async function ContactPage() {
   let contacts: ContactInfoRow[] = []
   let fetchError = ""

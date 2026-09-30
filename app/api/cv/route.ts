@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
+import { revalidatePath } from "next/cache"
 import { createAdminClient } from "@/lib/supabase-admin"
 
 const CV_BUCKET = "cv-files"
@@ -70,6 +71,9 @@ export async function POST(request: NextRequest) {
       console.error("POST /api/cv insert error:", insertError.message)
       return NextResponse.json({ error: "Failed to save CV record." }, { status: 500 })
     }
+
+    revalidatePath("/")
+    revalidatePath("/manage-portal/cv")
 
     return NextResponse.json(inserted, { status: 201 })
   } catch (err) {

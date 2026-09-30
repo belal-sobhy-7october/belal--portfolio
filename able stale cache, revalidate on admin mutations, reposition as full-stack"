@@ -1,0 +1,378 @@
+[1mdiff --git a/app/api/cv/route.ts b/app/api/cv/route.ts[m
+[1mindex 0ca33db..8dbb4ec 100644[m
+[1m--- a/app/api/cv/route.ts[m
+[1m+++ b/app/api/cv/route.ts[m
+[36m@@ -1,7 +1,8 @@[m
+ import { NextRequest, NextResponse } from "next/server"[m
+[32m+[m[32mimport { revalidatePath } from "next/cache"[m
+ import { createAdminClient } from "@/lib/supabase-admin"[m
+ [m
+[31m-const CV_BUCKET = "cv-files"[m
+[32m+[m[32mconst CV_BUCKET = "cv-storage"[m
+ [m
+ export async function GET() {[m
+   try {[m
+[36m@@ -71,6 +72,9 @@[m [mexport async function POST(request: NextRequest) {[m
+       return NextResponse.json({ error: "Failed to save CV record." }, { status: 500 })[m
+     }[m
+ [m
+[32m+[m[32m    revalidatePath("/")[m
+[32m+[m[32m    revalidatePath("/manage-portal/cv")[m
+[32m+[m
+     return NextResponse.json(inserted, { status: 201 })[m
+   } catch (err) {[m
+     const message = err instanceof Error ? err.message : "Internal server error"[m
+[1mdiff --git a/app/layout.tsx b/app/layout.tsx[m
+[1mindex 9708dd9..19e2c1d 100644[m
+[1m--- a/app/layout.tsx[m
+[1m+++ b/app/layout.tsx[m
+[36m@@ -8,8 +8,7 @@[m [mconst inter = Inter({ subsets: ["latin"] })[m
+ [m
+ export const metadata: Metadata = {[m
+   title: "Belal Sobhy | Portfolio",[m
+[31m-  description: "Professional portfolio of Belal Sobhy - Software Developer",[m
+[31m-    generator: 'v0.app'[m
+[32m+[m[32m  description: "Full-stack developer building scalable backend architectures, robust database systems, and fast, clean web interfaces with Node.js, Next.js, and PostgreSQL.",[m
+ }[m
+ [m
+ export default function RootLayout({[m
+[1mdiff --git a/app/manage-portal/contact/page.tsx b/app/manage-portal/contact/page.tsx[m
+[1mindex 6c0a606..014b5b9 100644[m
+[1m--- a/app/manage-portal/contact/page.tsx[m
+[1m+++ b/app/manage-portal/contact/page.tsx[m
+[36m@@ -3,6 +3,8 @@[m [mimport { ADMIN_ERRORS } from "@/lib/admin-messages"[m
+ import { createClient } from "@/lib/supabase-server"[m
+ import type { ContactInfoRow } from "@/lib/types"[m
+ [m
+[32m+[m[32mexport const dynamic = "force-dynamic"[m
+[32m+[m
+ export default async function ContactPage() {[m
+   let contacts: ContactInfoRow[] = [][m
+   let fetchError = ""[m
+[1mdiff --git a/app/manage-portal/experiences/page.tsx b/app/manage-portal/experiences/page.tsx[m
+[1mindex 5d8a0f9..004c632 100644[m
+[1m--- a/app/manage-portal/experiences/page.tsx[m
+[1m+++ b/app/manage-portal/experiences/page.tsx[m
+[36m@@ -3,6 +3,8 @@[m [mimport ExperiencesList from "@/components/admin/experiences-list"[m
+ import { ADMIN_ERRORS } from "@/lib/admin-messages"[m
+ import { createClient } from "@/lib/supabase-server"[m
+ [m
+[32m+[m[32mexport const dynamic = "force-dynamic"[m
+[32m+[m
+ type ExperiencesPageProps = {[m
+   searchParams: Promise<{ edit?: string; new?: string }>[m
+ }[m
+[1mdiff --git a/app/manage-portal/page.tsx b/app/manage-portal/page.tsx[m
+[1mindex 768c39e..e3e4828 100644[m
+[1m--- a/app/manage-portal/page.tsx[m
+[1m+++ b/app/manage-portal/page.tsx[m
+[36m@@ -3,6 +3,8 @@[m [mimport { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"[m
+ import { ADMIN_ERRORS } from "@/lib/admin-messages"[m
+ import { createClient } from "@/lib/supabase-server"[m
+ [m
+[32m+[m[32mexport const dynamic = "force-dynamic"[m
+[32m+[m
+ async function getCount(table: "projects" | "skills" | "experiences") {[m
+   try {[m
+     const supabase = await createClient()[m
+[1mdiff --git a/app/manage-portal/profile/page.tsx b/app/manage-portal/profile/page.tsx[m
+[1mindex d61c784..9d610f1 100644[m
+[1m--- a/app/manage-portal/profile/page.tsx[m
+[1m+++ b/app/manage-portal/profile/page.tsx[m
+[36m@@ -4,6 +4,8 @@[m [mimport { ADMIN_ERRORS } from "@/lib/admin-messages"[m
+ import { createClient } from "@/lib/supabase-server"[m
+ import type { ProfileSettings } from "@/lib/types"[m
+ [m
+[32m+[m[32mexport const dynamic = "force-dynamic"[m
+[32m+[m
+ export default async function ProfilePage() {[m
+   let profile: ProfileSettings & { id?: string } = {[m
+     full_name: "",[m
+[1mdiff --git a/app/manage-portal/projects/[id]/edit/page.tsx b/app/manage-portal/projects/[id]/edit/page.tsx[m
+[1mindex 80e0c80..2021fbc 100644[m
+[1m--- a/app/manage-portal/projects/[id]/edit/page.tsx[m
+[1m+++ b/app/manage-portal/projects/[id]/edit/page.tsx[m
+[36m@@ -3,6 +3,8 @@[m [mimport { ADMIN_ERRORS } from "@/lib/admin-messages"[m
+ import { createClient } from "@/lib/supabase-server"[m
+ import type { ProjectRow } from "@/lib/types"[m
+ [m
+[32m+[m[32mexport const dynamic = "force-dynamic"[m
+[32m+[m
+ type EditProjectPageProps = {[m
+   params: Promise<{ id: string }>[m
+ }[m
+[1mdiff --git a/app/manage-portal/projects/page.tsx b/app/manage-portal/projects/page.tsx[m
+[1mindex bd6a41b..7c57f31 100644[m
+[1m--- a/app/manage-portal/projects/page.tsx[m
+[1m+++ b/app/manage-portal/projects/page.tsx[m
+[36m@@ -5,6 +5,8 @@[m [mimport { ADMIN_ERRORS } from "@/lib/admin-messages"[m
+ import { createClient } from "@/lib/supabase-server"[m
+ import type { ProjectRow } from "@/lib/types"[m
+ [m
+[32m+[m[32mexport const dynamic = "force-dynamic"[m
+[32m+[m
+ export default async function ProjectsPage() {[m
+   let projects: ProjectRow[] = [][m
+   let fetchError = ""[m
+[1mdiff --git a/app/manage-portal/skills/page.tsx b/app/manage-portal/skills/page.tsx[m
+[1mindex 0b2259b..57e9942 100644[m
+[1m--- a/app/manage-portal/skills/page.tsx[m
+[1m+++ b/app/manage-portal/skills/page.tsx[m
+[36m@@ -2,6 +2,8 @@[m [mimport SkillsManager, { type AdminSkillRow, type CategoryRow } from "@/component[m
+ import { ADMIN_ERRORS } from "@/lib/admin-messages"[m
+ import { createClient } from "@/lib/supabase-server"[m
+ [m
+[32m+[m[32mexport const dynamic = "force-dynamic"[m
+[32m+[m
+ export default async function SkillsPage() {[m
+   let categories: CategoryRow[] = [][m
+   let skills: AdminSkillRow[] = [][m
+[1mdiff --git a/app/page.tsx b/app/page.tsx[m
+[1mindex 9442829..0aee61d 100644[m
+[1m--- a/app/page.tsx[m
+[1m+++ b/app/page.tsx[m
+[36m@@ -7,6 +7,8 @@[m [mimport Contact from "@/components/contact"[m
+ import Footer from "@/components/footer"[m
+ import Navbar from "@/components/navbar"[m
+ [m
+[32m+[m[32mexport const dynamic = "force-dynamic"[m
+[32m+[m
+ export const metadata: Metadata = {[m
+   title: "Belal Sobhy | Portfolio",[m
+   description: "Professional portfolio of Belal Sobhy - Software Developer",[m
+[1mdiff --git a/components/contact.tsx b/components/contact.tsx[m
+[1mindex 14fcf48..42d440f 100644[m
+[1m--- a/components/contact.tsx[m
+[1m+++ b/components/contact.tsx[m
+[36m@@ -4,7 +4,7 @@[m [mimport { motion } from "framer-motion"[m
+ import { Badge } from "@/components/ui/badge"[m
+ import { Button } from "@/components/ui/button"[m
+ import { Card, CardContent } from "@/components/ui/card"[m
+[31m-import { Mail, MapPin, Phone, Github, Linkedin } from "lucide-react"[m
+[32m+[m[32mimport { Mail, MapPin, Phone, Github, Linkedin, Award } from "lucide-react"[m
+ [m
+ export default function Contact() {[m
+   const fadeIn = {[m
+[36m@@ -16,8 +16,8 @@[m [mexport default function Contact() {[m
+     {[m
+       icon: <Mail className="h-6 w-6 text-green" />,[m
+       title: "Email",[m
+[31m-      value: "zaidsobhy2000@gmail.com",[m
+[31m-      link: "mailto:zaidsobhy2000@gmail.com",[m
+[32m+[m[32m      value: "belalsobhy7oc@gmail.com",[m
+[32m+[m[32m      link: "mailto:belalsobhy7oc@gmail.com",[m
+     },[m
+     {[m
+       icon: <Phone className="h-6 w-6 text-green" />,[m
+[36m@@ -90,10 +90,15 @@[m [mexport default function Contact() {[m
+                       </a>[m
+                     </Button>[m
+                     <Button variant="outline" size="icon" className="rounded-full border-border bg-transparent text-muted-foreground hover:border-green hover:bg-transparent hover:text-green" asChild>[m
+[31m-                      <a href="https://github.com" target="_blank" rel="noopener noreferrer">[m
+[32m+[m[32m                      <a href="https://github.com/belal-sobhy-7october" target="_blank" rel="noopener noreferrer">[m
+                         <Github className="h-5 w-5" />[m
+                       </a>[m
+                     </Button>[m
+[32m+[m[32m                    <Button variant="outline" size="icon" className="rounded-full border-border bg-transparent text-muted-foreground hover:border-green hover:bg-transparent hover:text-green" asChild>[m
+[32m+[m[32m                      <a href="https://www.credly.com/badges/f3896699-8d62-4bd7-bc99-25fdce80f4aa" target="_blank" rel="noopener noreferrer">[m
+[32m+[m[32m                        <Award className="h-5 w-5" />[m
+[32m+[m[32m                      </a>[m
+[32m+[m[32m                    </Button>[m
+                   </div>[m
+                 </CardContent>[m
+               </Card>[m
+[1mdiff --git a/components/footer.tsx b/components/footer.tsx[m
+[1mindex 515e434..ddec421 100644[m
+[1m--- a/components/footer.tsx[m
+[1m+++ b/components/footer.tsx[m
+[36m@@ -1,9 +1,10 @@[m
+ import Link from "next/link"[m
+[31m-import { Github, Linkedin, Mail, MessageCircle } from "lucide-react"[m
+[32m+[m[32mimport { Github, Linkedin, Mail, MessageCircle, Award } from "lucide-react"[m
+ import { fetchContacts, fetchProfileName } from "@/lib/data"[m
+ import type { ContactInfoRow } from "@/lib/types"[m
+ [m
+ const LINKEDIN_URL = "https://www.linkedin.com/in/belal-sobhy-134845397/"[m
+[32m+[m[32mconst CRELY_URL = "https://www.credly.com/badges/f3896699-8d62-4bd7-bc99-25fdce80f4aa"[m
+ [m
+ function isHiddenSocialPlatform(platformName: string) {[m
+   const key = platformName.toLowerCase().trim()[m
+[36m@@ -22,6 +23,7 @@[m [mfunction getPlatformIcon(platformName: string) {[m
+   if (key.includes("linkedin")) return Linkedin[m
+   if (key.includes("whatsapp")) return MessageCircle[m
+   if (key.includes("email") || key.includes("mail")) return Mail[m
+[32m+[m[32m  if (key.includes("credly")) return Award[m
+   return MessageCircle[m
+ }[m
+ [m
+[36m@@ -71,6 +73,15 @@[m [mexport default async function Footer() {[m
+                   </Link>[m
+                 )[m
+               })}[m
+[32m+[m[32m              <Link[m
+[32m+[m[32m                href={CRELY_URL}[m
+[32m+[m[32m                target="_blank"[m
+[32m+[m[32m                rel="noopener noreferrer"[m
+[32m+[m[32m                className="flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm text-muted-foreground transition-colors hover:border-green hover:text-green"[m
+[32m+[m[32m              >[m
+[32m+[m[32m                <Award className="h-4 w-4" />[m
+[32m+[m[32m                Credly[m
+[32m+[m[32m              </Link>[m
+             </div>[m
+           )}[m
+ [m
+[1mdiff --git a/components/hero-client.tsx b/components/hero-client.tsx[m
+[1mindex 7e48aee..d256551 100644[m
+[1m--- a/components/hero-client.tsx[m
+[1m+++ b/components/hero-client.tsx[m
+[36m@@ -77,7 +77,7 @@[m [mexport default function HeroClient({ profile }: HeroClientProps) {[m
+ [m
+             <div className="flex gap-4 mt-8">[m
+               <Button variant="ghost" size="icon" className="rounded-full text-muted-foreground hover:bg-green-light hover:text-green" asChild>[m
+[31m-                <a href="https://github.com" target="_blank" rel="noopener noreferrer">[m
+[32m+[m[32m                <a href="https://github.com/belal-sobhy-7october" target="_blank" rel="noopener noreferrer">[m
+                   <Github className="h-5 w-5" />[m
+                 </a>[m
+               </Button>[m
+[1mdiff --git a/components/navbar.tsx b/components/navbar.tsx[m
+[1mindex baabc7d..d4514af 100644[m
+[1m--- a/components/navbar.tsx[m
+[1m+++ b/components/navbar.tsx[m
+[36m@@ -21,15 +21,15 @@[m [mexport default function Navbar() {[m
+   }, [])[m
+ [m
+   useEffect(() => {[m
+[32m+[m[32m    let mounted = true[m
+     supabase[m
+       .from("cv_files")[m
+       .select("file_url")[m
+       .limit(1)[m
+       .single()[m
+       .then(({ data }) => {[m
+[31m-        if (data) setCvUrl(data.file_url)[m
+[32m+[m[32m        if (mounted && data) setCvUrl(data.file_url)[m
+       })[m
+[31m-      .catch(() => {})[m
+   }, [])[m
+ [m
+   const scrollToSection = (sectionId: string) => {[m
+[1mdiff --git a/lib/admin-actions.ts b/lib/admin-actions.ts[m
+[1mindex c3b5c24..bec25c9 100644[m
+[1m--- a/lib/admin-actions.ts[m
+[1m+++ b/lib/admin-actions.ts[m
+[36m@@ -5,8 +5,6 @@[m [mimport { redirect } from "next/navigation"[m
+ import { ADMIN_ERRORS } from "@/lib/admin-messages"[m
+ import { createClient } from "@/lib/supabase-server"[m
+ [m
+[31m-const CV_BUCKET = "cv-storage"[m
+[31m-[m
+ function formatDuration(startDate: string, endDate: string | null): string {[m
+   const start = new Date(startDate).toLocaleDateString("en-US", {[m
+     month: "short",[m
+[36m@@ -25,56 +23,6 @@[m [mfunction parseTags(raw: string): string[] {[m
+     .filter(Boolean)[m
+ }[m
+ [m
+[31m-export async function uploadCv(formData: FormData) {[m
+[31m-  try {[m
+[31m-    const supabase = await createClient()[m
+[31m-    const file = formData.get("file") as File | null[m
+[31m-[m
+[31m-    if (!file || file.size === 0) {[m
+[31m-      return { success: false as const, error: "Please select a file." }[m
+[31m-    }[m
+[31m-[m
+[31m-    if (file.type !== "application/pdf") {[m
+[31m-      return { success: false as const, error: "Only PDF files are allowed." }[m
+[31m-    }[m
+[31m-[m
+[31m-    const fileName = `Belal-Sobhy-CV.pdf`[m
+[31m-    const filePath = `${Date.now()}-${fileName}`[m
+[31m-[m
+[31m-    const { error: bucketError } = await supabase.storage.createBucket(CV_BUCKET, {[m
+[31m-      public: true,[m
+[31m-    })[m
+[31m-    if (bucketError && !bucketError.message.includes("already exists")) {[m
+[31m-      return { success: false as const, error: "Failed to create storage bucket." }[m
+[31m-    }[m
+[31m-[m
+[31m-    const { error: uploadError } = await supabase.storage.from(CV_BUCKET).upload(filePath, file, {[m
+[31m-      upsert: true,[m
+[31m-    })[m
+[31m-    if (uploadError) {[m
+[31m-      return { success: false as const, error: "Failed to upload file." }[m
+[31m-    }[m
+[31m-[m
+[31m-    const { data: publicUrlData } = supabase.storage.from(CV_BUCKET).getPublicUrl(filePath)[m
+[31m-    const fileUrl = publicUrlData.publicUrl[m
+[31m-[m
+[31m-    await supabase.from("cv_files").delete().neq("id", "00000000-0000-0000-0000-000000000000")[m
+[31m-[m
+[31m-    const { error: insertError } = await supabase.from("cv_files").insert({[m
+[31m-      file_url: fileUrl,[m
+[31m-      file_name: fileName,[m
+[31m-    })[m
+[31m-    if (insertError) {[m
+[31m-      return { success: false as const, error: "Failed to save CV record." }[m
+[31m-    }[m
+[31m-[m
+[31m-    revalidatePath("/manage-portal/cv")[m
+[31m-    return { success: true as const }[m
+[31m-  } catch {[m
+[31m-    return { success: false as const, error: ADMIN_ERRORS.save }[m
+[31m-  }[m
+[31m-}[m
+[31m-[m
+ export async function deleteProject(id: string) {[m
+   try {[m
+     const supabase = await createClient()[m
+[1mdiff --git a/lib/types.ts b/lib/types.ts[m
+[1mindex 84661ab..b1c2170 100644[m
+[1m--- a/lib/types.ts[m
+[1m+++ b/lib/types.ts[m
+[36m@@ -36,6 +36,8 @@[m [mexport interface ExperienceRow {[m
+   title: string[m
+   company: string[m
+   duration: string[m
+[32m+[m[32m  start_date?: string[m
+[32m+[m[32m  end_date?: string | null[m
+   description: string | null[m
+   created_at?: string[m
+ }[m
+[1mdiff --git a/schema.sql b/schema.sql[m
+[1mindex 6617bf9..34833ae 100644[m
+[1m--- a/schema.sql[m
+[1m+++ b/schema.sql[m
+[36m@@ -48,6 +48,8 @@[m [mCREATE TABLE experiences ([m
+   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),[m
+   title TEXT NOT NULL,[m
+   company TEXT NOT NULL,[m
+[32m+[m[32m  start_date DATE,[m
+[32m+[m[32m  end_date DATE,[m
+   duration TEXT NOT NULL,[m
+   description TEXT,[m
+   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()[m
+[36m@@ -87,7 +89,7 @@[m [mINSERT INTO categories (name, slug) VALUES[m
+   ('AI & Intelligent Systems', 'ai-ml')[m
+ ON CONFLICT (slug) DO NOTHING;[m
+ [m
+[31m--- إدخال المهارات بربط الـ UUID الصحيح (تم تصحيح سطر الـ OWASP Security)[m
+[32m+[m[32m-- إدخال المهارات بربط الـ UUID الصحيح[m
+ INSERT INTO skills (name, category_id) VALUES [m
+   ('React', (SELECT id FROM categories WHERE slug = 'frontend')),[m
+   ('Next.js', (SELECT id FROM categories WHERE slug = 'frontend')),[m
+[36m@@ -115,10 +117,10 @@[m [mINSERT INTO projects (title, description, tags, github_url, live_url) VALUES[m
+   ('AI Chat Assistant & Agent', 'An intelligent chat assistant powered by LLMs with context awareness and agentic workflows.', ARRAY['Python', 'LangChain', 'Gemini API'], 'https://github.com/belal/ai-chat', 'https://ai-chat-demo.com'),[m
+   ('Modern Portfolio Project', 'Clean portfolio ecosystem built with v0 template layout and interactive admin controls.', ARRAY['Next.js', 'TailwindCSS', 'Supabase'], 'https://github.com/belal/portfolio', 'https://belal.dev');[m
+ [m
+[31m--- إدخال خبرات العمل والدراسة[m
+[31m-INSERT INTO experiences (title, company, duration, description) VALUES[m
+[31m-  ('Lead Data & Academic Research Assistant', 'Freelance', '2023 - Present', 'Specialized in sensitive data management, prompt engineering optimization, and custom automated tools.'),[m
+[31m-  ('B.Sc. Computer Science Student', 'Thebes Academy', '2024 - Present', 'Focusing on robust software development practices, secure code implementations, and systems architecture.');[m
+[32m+[m[32m-- إدخال خبرات العمل والدراسة (مع تواريخ فعلية)[m
+[32m+[m[32mINSERT INTO experiences (title, company, start_date, end_date, duration, description) VALUES[m
+[32m+[m[32m  ('Lead Data & Academic Research Assistant', 'Freelance', '2023-01-01', NULL, '2023 - Present', 'Specialized in sensitive data management, prompt engineering optimization, and custom automated tools.'),[m
+[32m+[m[32m  ('B.Sc. Computer Science Student', 'Thebes Academy', '2024-01-01', NULL, '2024 - Present', 'Focusing on robust software development practices, secure code implementations, and systems architecture.');[m
+ [m
+ -- إدخال بيانات التواصل المظبوطة[m
+ INSERT INTO contact_info (platform_name, value, icon_class) VALUES[m

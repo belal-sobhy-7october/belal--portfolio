@@ -5,6 +5,8 @@ import { ADMIN_ERRORS } from "@/lib/admin-messages"
 import { createClient } from "@/lib/supabase-server"
 import type { ProjectRow } from "@/lib/types"
 
+export const dynamic = "force-dynamic"
+
 export default async function ProjectsPage() {
   let projects: ProjectRow[] = []
   let fetchError = ""

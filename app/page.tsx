@@ -7,9 +7,11 @@ import Contact from "@/components/contact"
 import Footer from "@/components/footer"
 import Navbar from "@/components/navbar"
 
+export const dynamic = "force-dynamic"
+
 export const metadata: Metadata = {
   title: "Belal Sobhy | Portfolio",
-  description: "Professional portfolio of Belal Sobhy - Software Developer",
+  description: "Full-stack developer building scalable backend architectures, robust database systems, and fast, clean web interfaces with Node.js, Next.js, and PostgreSQL.",
 }
 
 export default function Home() {

@@ -3,6 +3,8 @@ import { ADMIN_ERRORS } from "@/lib/admin-messages"
 import { createClient } from "@/lib/supabase-server"
 import type { ProjectRow } from "@/lib/types"
 
+export const dynamic = "force-dynamic"
+
 type EditProjectPageProps = {
   params: Promise<{ id: string }>
 }

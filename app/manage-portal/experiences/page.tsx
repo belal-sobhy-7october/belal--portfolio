@@ -3,6 +3,8 @@ import ExperiencesList from "@/components/admin/experiences-list"
 import { ADMIN_ERRORS } from "@/lib/admin-messages"
 import { createClient } from "@/lib/supabase-server"
 
+export const dynamic = "force-dynamic"
+
 type ExperiencesPageProps = {
   searchParams: Promise<{ edit?: string; new?: string }>
 }

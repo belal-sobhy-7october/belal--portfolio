@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Github, Linkedin, Mail, MessageCircle } from "lucide-react"
+import { Github, Linkedin, Mail, MessageCircle, Award } from "lucide-react"
 import { fetchContacts, fetchProfileName } from "@/lib/data"
 import type { ContactInfoRow } from "@/lib/types"
 
@@ -22,6 +22,7 @@ function getPlatformIcon(platformName: string) {
   if (key.includes("linkedin")) return Linkedin
   if (key.includes("whatsapp")) return MessageCircle
   if (key.includes("email") || key.includes("mail")) return Mail
+  if (key.includes("credly")) return Award
   return MessageCircle
 }
 

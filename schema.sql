@@ -48,6 +48,8 @@ CREATE TABLE experiences (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   title TEXT NOT NULL,
   company TEXT NOT NULL,
+  start_date DATE,
+  end_date DATE,
   duration TEXT NOT NULL,
   description TEXT,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
@@ -87,7 +89,7 @@ INSERT INTO categories (name, slug) VALUES
   ('AI & Intelligent Systems', 'ai-ml')
 ON CONFLICT (slug) DO NOTHING;
 
--- إدخال المهارات بربط الـ UUID الصحيح (تم تصحيح سطر الـ OWASP Security)
+-- إدخال المهارات بربط الـ UUID الصحيح
 INSERT INTO skills (name, category_id) VALUES 
   ('React', (SELECT id FROM categories WHERE slug = 'frontend')),
   ('Next.js', (SELECT id FROM categories WHERE slug = 'frontend')),
@@ -115,10 +117,10 @@ INSERT INTO projects (title, description, tags, github_url, live_url) VALUES
   ('AI Chat Assistant & Agent', 'An intelligent chat assistant powered by LLMs with context awareness and agentic workflows.', ARRAY['Python', 'LangChain', 'Gemini API'], 'https://github.com/belal/ai-chat', 'https://ai-chat-demo.com'),
   ('Modern Portfolio Project', 'Clean portfolio ecosystem built with v0 template layout and interactive admin controls.', ARRAY['Next.js', 'TailwindCSS', 'Supabase'], 'https://github.com/belal/portfolio', 'https://belal.dev');
 
--- إدخال خبرات العمل والدراسة
-INSERT INTO experiences (title, company, duration, description) VALUES
-  ('Lead Data & Academic Research Assistant', 'Freelance', '2023 - Present', 'Specialized in sensitive data management, prompt engineering optimization, and custom automated tools.'),
-  ('B.Sc. Computer Science Student', 'Thebes Academy', '2024 - Present', 'Focusing on robust software development practices, secure code implementations, and systems architecture.');
+-- إدخال خبرات العمل والدراسة (مع تواريخ فعلية)
+INSERT INTO experiences (title, company, start_date, end_date, duration, description) VALUES
+  ('Lead Data & Academic Research Assistant', 'Freelance', '2023-01-01', NULL, '2023 - Present', 'Specialized in sensitive data management, prompt engineering optimization, and custom automated tools.'),
+  ('B.Sc. Computer Science Student', 'Thebes Academy', '2024-01-01', NULL, '2024 - Present', 'Focusing on robust software development practices, secure code implementations, and systems architecture.');
 
 -- إدخال بيانات التواصل المظبوطة
 INSERT INTO contact_info (platform_name, value, icon_class) VALUES

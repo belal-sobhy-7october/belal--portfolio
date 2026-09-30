@@ -2,6 +2,8 @@ import SkillsManager, { type AdminSkillRow, type CategoryRow } from "@/component
 import { ADMIN_ERRORS } from "@/lib/admin-messages"
 import { createClient } from "@/lib/supabase-server"
 
+export const dynamic = "force-dynamic"
+
 export default async function SkillsPage() {
   let categories: CategoryRow[] = []
   let skills: AdminSkillRow[] = []

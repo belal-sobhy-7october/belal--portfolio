@@ -4,6 +4,8 @@ import { ADMIN_ERRORS } from "@/lib/admin-messages"
 import { createClient } from "@/lib/supabase-server"
 import type { ProfileSettings } from "@/lib/types"
 
+export const dynamic = "force-dynamic"
+
 export default async function ProfilePage() {
   let profile: ProfileSettings & { id?: string } = {
     full_name: "",

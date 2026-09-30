@@ -3,6 +3,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ADMIN_ERRORS } from "@/lib/admin-messages"
 import { createClient } from "@/lib/supabase-server"
 
+export const dynamic = "force-dynamic"
+
 async function getCount(table: "projects" | "skills" | "experiences") {
   try {
     const supabase = await createClient()

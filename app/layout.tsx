@@ -8,8 +8,7 @@ const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   title: "Belal Sobhy | Portfolio",
-  description: "Professional portfolio of Belal Sobhy - Software Developer",
-    generator: 'v0.app'
+  description: "Full-stack developer building scalable backend architectures, robust database systems, and fast, clean web interfaces with Node.js, Next.js, and PostgreSQL.",
 }
 
 export default function RootLayout({

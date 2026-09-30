@@ -4,7 +4,7 @@ import { motion } from "framer-motion"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { Mail, MapPin, Phone, Github, Linkedin } from "lucide-react"
+import { Mail, MapPin, Phone, Github, Linkedin, Award } from "lucide-react"
 
 export default function Contact() {
   const fadeIn = {
@@ -16,8 +16,8 @@ export default function Contact() {
     {
       icon: <Mail className="h-6 w-6 text-green" />,
       title: "Email",
-      value: "zaidsobhy2000@gmail.com",
-      link: "mailto:zaidsobhy2000@gmail.com",
+      value: "belalsobhy7oc@gmail.com",
+      link: "mailto:belalsobhy7oc@gmail.com",
     },
     {
       icon: <Phone className="h-6 w-6 text-green" />,
@@ -90,8 +90,13 @@ export default function Contact() {
                       </a>
                     </Button>
                     <Button variant="outline" size="icon" className="rounded-full border-border bg-transparent text-muted-foreground hover:border-green hover:bg-transparent hover:text-green" asChild>
-                      <a href="https://github.com" target="_blank" rel="noopener noreferrer">
+                      <a href="https://github.com/belal-sobhy-7october" target="_blank" rel="noopener noreferrer">
                         <Github className="h-5 w-5" />
+                      </a>
+                    </Button>
+                    <Button variant="outline" size="icon" className="rounded-full border-border bg-transparent text-muted-foreground hover:border-green hover:bg-transparent hover:text-green" asChild>
+                      <a href="https://www.credly.com/badges/f3896699-8d62-4bd7-bc99-25fdce80f4aa" target="_blank" rel="noopener noreferrer">
+                        <Award className="h-5 w-5" />
                       </a>
                     </Button>
                   </div>

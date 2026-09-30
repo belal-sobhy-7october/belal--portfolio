@@ -77,7 +77,7 @@ export default function HeroClient({ profile }: HeroClientProps) {
 
             <div className="flex gap-4 mt-8">
               <Button variant="ghost" size="icon" className="rounded-full text-muted-foreground hover:bg-green-light hover:text-green" asChild>
-                <a href="https://github.com" target="_blank" rel="noopener noreferrer">
+                <a href="https://github.com/belal-sobhy-7october" target="_blank" rel="noopener noreferrer">
                   <Github className="h-5 w-5" />
                 </a>
               </Button>
